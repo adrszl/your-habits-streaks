@@ -1,10 +1,12 @@
 {
-  "posts": [
-    { "id": 1, "title": "json-server", "author": "typicode" },
-    { "id": 2, "title": "json-server2", "author": "typicode2" }
+  "activeHabits": [
+    { "id": 1, "title": "Active Habit", "excerpt": "My Active habit", "description": "My Active habit description" }
   ],
-  "comments": [
-    { "id": 1, "body": "some comment", "postId": 1 }
+  "succeededHabits": [
+    { "id": 1, "title": "Succeeded Habit", "excerpt": "My succeeded habit", "description": "My succeeded habit description" }
+  ],
+  "failedHabits": [
+    { "id": 1, "title": "Failed Habit", "excerpt": "My failed habit", "description": "My failed habit description" }
   ],
   "userName": { "name": "Adrian" }
 }
