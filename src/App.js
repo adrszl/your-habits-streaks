@@ -17,6 +17,7 @@ import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 
 import "./App.css";
+import CustomModal from './components/CustomModal';
 
 function App() {
   const theme = createTheme({
@@ -32,6 +33,9 @@ function App() {
   const [activeHabits, setActiveHabits] = useState(undefined);
   const [succeededHabits, setSucceededHabits] = useState(undefined);
   const [failedHabits, setFailedHabits] = useState(undefined);
+  const [openModal, setOpenModal] = useState(false);
+  const [modalTitle, setModalTitle] = useState("");
+  const [modalDescription, setModalDescription] = useState("");
 
   useEffect(() => {
     axios.get('http://localhost:3001/userName')
@@ -70,6 +74,14 @@ function App() {
       console.log('ERROR:', error);
     })
   }, []);
+
+  const addNewEntry = (entryType) => {
+    if(entryType === 'active-habit') {
+      setModalTitle("Add new Active Habit");
+      setModalDescription("Add new habit you wish to start working on");
+      setOpenModal(true);
+    }
+  }
   
   return (
     <div>
@@ -94,6 +106,13 @@ function App() {
         {/* header */}
         {/* main view */}
         <main>
+          {/* add new entry modal */}
+          <CustomModal
+            openModal={openModal}
+            setOpenModal={setOpenModal}
+            modalTitle={modalTitle}
+            modalDescription={modalDescription} />
+          {/* add new entry modal */}
           <Box sx={{ flexGrow: 1 }}>
             <Grid container spacing={2}>
               <Grid item xs={4}>
@@ -108,7 +127,7 @@ function App() {
                   </ul>
                   <div style={{display: "flex", flexDirection: "row", justifyContent: "center"}}>
                     <Tooltip title="Add new habit you wish to start working on">
-                      <Button variant="contained">Add new</Button>
+                      <Button variant="contained" onClick={() => addNewEntry('active-habit')}>Add new</Button>
                     </Tooltip>
                   </div>                  
                 </Paper>
