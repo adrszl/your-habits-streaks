@@ -25,6 +25,10 @@ function App() {
       black: {
         main: '#000',
         contrastText: '#fff',
+      },
+      darkTheme: {
+        background: '#000',
+        text: '#fff'
       }
     }
   });
@@ -36,6 +40,7 @@ function App() {
   const [openModal, setOpenModal] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
   const [modalDescription, setModalDescription] = useState("");
+  const [switchChecked, setSwitchChecked] = useState(false);
 
   useEffect(() => {
     axios.get('http://localhost:3001/userName')
@@ -80,14 +85,26 @@ function App() {
       setModalTitle("Add new Active Habit");
       setModalDescription("Add new habit you wish to start working on");
       setOpenModal(true);
+    } else if(entryType === 'succeeded-habits') {
+      setModalTitle("Add Past Succeed Habits");
+      setModalDescription("Add new habit you already succeeded before");
+      setOpenModal(true);
+    } else if(entryType === "failed-habits") {
+      setModalTitle("Add Past Failed Habits");
+      setModalDescription("Add new habit you failed to implement before");
+      setOpenModal(true);
     }
   }
+
+  const handleSwitchChange = (event) => {
+    setSwitchChecked(event.target.checked);
+  };
   
   return (
     <div>
       <ThemeProvider theme={theme}>
         {/* header */}
-        <AppBar position="static">
+        <AppBar position="static" color={{bgcolor: 'darkTheme.background'}}>
           <Toolbar variant="dense">
             <IconButton
               edge="start"
@@ -100,7 +117,11 @@ function App() {
             <Typography variant="h6" color="inherit" component="div">
               { userName === 'unknown' ?  null : userName + "'s" } Habits
             </Typography>
-            <FormControlLabel control={<Switch />} label="Dark mode" color="black" />
+            <FormControlLabel control={
+              <Switch 
+                checked={switchChecked}
+                onChange={handleSwitchChange} />}
+              label="Dark mode" color="black" />
           </Toolbar>
         </AppBar>
         {/* header */}
@@ -144,7 +165,7 @@ function App() {
                   </ul>
                   <div style={{display: "flex", flexDirection: "row", justifyContent: "center"}}>
                     <Tooltip title="Manually add a habit, which you succeeded in the past">
-                      <Button variant="contained">Add new</Button>
+                      <Button variant="contained" onClick={() => addNewEntry('succeeded-habits')}>Add new</Button>
                     </Tooltip>
                   </div> 
                 </Paper>
@@ -161,7 +182,7 @@ function App() {
                   </ul>
                   <div style={{display: "flex", flexDirection: "row", justifyContent: "center"}}>
                     <Tooltip title="Manually add a habit, which you failed in the past">
-                      <Button variant="contained">Add new</Button>
+                      <Button variant="contained" onClick={() => addNewEntry('failed-habits')}>Add new</Button>
                     </Tooltip>
                   </div> 
                 </Paper>
